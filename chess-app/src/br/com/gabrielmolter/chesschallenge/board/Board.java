@@ -33,7 +33,6 @@ public class Board {
 
     }
 
-
     /**
      * Main Board matrix
      */
@@ -47,5 +46,30 @@ public class Board {
 
     public int getySize() {
         return ySize;
+    }
+
+
+    public void setPiece(int x, int y, Allocatable pieceToInsert){
+        try{
+            mMatrix.get(x).set(y, pieceToInsert);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("x = [" + x + "], y = [" + y + "], pieceToInsert = [" + pieceToInsert + "]");
+            System.out.println("Invalid Position");
+            throw e;
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    public Allocatable getPiece(int x, int y){
+        try{
+            return mMatrix.get(x).get(y);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("x = [" + x + "], y = [" + y + "]");
+            System.out.println("Invalid Position");
+            throw e;
+        }catch (Exception e){
+            throw e;
+        }
     }
 }
