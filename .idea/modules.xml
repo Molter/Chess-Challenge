@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Chess-Challenge.iml" filepath="$PROJECT_DIR$/Chess-Challenge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Chess-Tests/Chess-Tests.iml" filepath="$PROJECT_DIR$/Chess-Tests/Chess-Tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/chess-app/chess-app.iml" filepath="$PROJECT_DIR$/chess-app/chess-app.iml" />
     </modules>
   </component>
