@@ -7,20 +7,20 @@ import java.util.ArrayList;
  */
 public class Board {
 
-    private int xSize;
-    private int ySize;
+    private int mRows;
+    private int mColumns;
 
     private ArrayList<ArrayList<Allocatable>>  mMatrix = new ArrayList<>();
 
 
     /**
      * Constructor of the Board
-     * @param x Height
-     * @param y Width
+     * @param x Rows
+     * @param y Columns
      */
     public Board (int x, int y){
-        this.xSize = x;
-        this.ySize = y;
+        this.mRows = x;
+        this.mColumns = y;
 
         for (int i = 0; i < x; i++) {
             ArrayList<Allocatable> row = new ArrayList<>();
@@ -40,15 +40,20 @@ public class Board {
         return mMatrix;
     }
 
-    public int getxSize() {
-        return xSize;
+    public int getNumberOfRows() {
+        return mRows;
     }
 
-    public int getySize() {
-        return ySize;
+    public int getNumberOfColumns() {
+        return mColumns;
     }
 
-
+    /**
+     * Set a piece into a specific position
+     * @param x Row
+     * @param y Column
+     * @param pieceToInsert Piece to be inserted
+     */
     public void setPiece(int x, int y, Allocatable pieceToInsert){
         try{
             mMatrix.get(x).set(y, pieceToInsert);
@@ -61,6 +66,12 @@ public class Board {
         }
     }
 
+    /**
+     * Return the piece at a specific position
+     * @param x Row
+     * @param y Column
+     * @return Piece or Empty Space
+     */
     public Allocatable getPiece(int x, int y){
         try{
             return mMatrix.get(x).get(y);

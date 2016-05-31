@@ -24,13 +24,14 @@ public class BoardTest {
         Random rand = new Random();
         mBoardSize = rand.nextInt(10);
         mBoard = new Board(mBoardSize, mBoardSize);
+        System.out.println("Board Size = " + mBoardSize + " x " + mBoardSize);
     }
 
     @Test
     public void validateBoardSizes(){
-        assertEquals(mBoardSize, mBoard.getxSize());
+        assertEquals(mBoardSize, mBoard.getNumberOfRows());
 
-        assertEquals(mBoardSize, mBoard.getySize());
+        assertEquals(mBoardSize, mBoard.getNumberOfColumns());
         // validating x size
         assertEquals(mBoardSize, mBoard.getBoard().size());
         //validating y size
@@ -38,7 +39,7 @@ public class BoardTest {
     }
 
     @Test
-    public void validateBoardEmptyness(){
+    public void validateBoardEmptiness(){
         for (ArrayList<Allocatable> row : mBoard.getBoard()){
             for (Allocatable cell :
                     row) {
@@ -54,9 +55,12 @@ public class BoardTest {
         mBoard.setPiece(0, 0, piece);
         assertEquals(mBoard.getPiece(0, 0), piece);
 
+        piece =  new KingPiece();
         mBoard.setPiece(0, mBoardSize - 1, piece);
         assertEquals(mBoard.getPiece(0, mBoardSize - 1), piece);
 
+
+        piece =  new KingPiece();
         mBoard.setPiece(mBoardSize - 1, 0, piece);
         assertEquals(mBoard.getPiece(mBoardSize - 1, 0), piece);
     }
