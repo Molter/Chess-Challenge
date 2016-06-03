@@ -2,14 +2,14 @@ package br.com.gabrielmolter.chesschallenge.board;
 
 import java.util.ArrayList;
 
-import static br.com.gabrielmolter.chesschallenge.board.Allocatable.PieceRule.*;
-
 /**
  * Created by Gabriel Molter on 31/05/2016 at 23:23 BRT.
  */
 public class PieceBoardAllocator {
 
+    private final ArrayList<ArrayList<Allocatable>> mBoardMatrix;
     private Board mBoard;
+
 
     private ArrayList<Allocatable> mNorthPieces = new ArrayList<>();
     private ArrayList<Allocatable> mNorthEastPieces = new ArrayList<>();
@@ -24,7 +24,9 @@ public class PieceBoardAllocator {
 
 
     public PieceBoardAllocator (Board board){
+
         mBoard = board;
+        mBoardMatrix = mBoard.getBoard();
     }
 
     public boolean allocatePiece(int row, int column, Allocatable piece){
@@ -48,40 +50,31 @@ public class PieceBoardAllocator {
                     fillSpaces(mNorthPieces);
                     break;
                 case SOUTH:
-                    findSpaces(SOUTH);
                     fillSpaces(mSouthPieces);
                     break;
                 case EAST:
-                    findSpaces(EAST);
                     fillSpaces(mEastPieces);
                     break;
                 case WEST:
-                    findSpaces(WEST);
                     fillSpaces(mWeastPieces);
                     break;
                 case NORTHEAST:
-                    findSpaces(NORTHEAST);
                     fillSpaces(mNorthEastPieces);
                     break;
                 case NORTHWEST:
-                    findSpaces(NORTHWEST);
                     fillSpaces(mNorthWestPieces);
                     break;
                 case SOUTHEAST:
-                    findSpaces(SOUTHEAST);
                     fillSpaces(mSouthEastPieces);
                     break;
                 case SOUTHWEST:
-                    findSpaces(SOUTHWEST);
                     fillSpaces(mSouthWestPieces);
                     break;
                 case KING:
-                    findSpacesKING(piece);
-                    fillSpaces(mKingPieces);
+                    fillSpacesKing(piece);
                     break;
                 case KNIGHT:
-                    findSpaces(KNIGHT);
-                    fillSpaces(mKnightPieces);
+                    fillSpacesKnight(piece);
                     break;
                 case NONE:
                 default:
@@ -90,45 +83,54 @@ public class PieceBoardAllocator {
         }
     }
 
-    private void findSpacesKING(Allocatable piece) {
+    private void fillSpacesKnight(Allocatable piece) {
 
         int currentRow = piece.getRow();
         int currentColumn = piece.getColumn();
 
+        fillIfExists(currentRow - 2, currentColumn + 1);
+        fillIfExists(currentRow - 2, currentColumn - 1);
+
+        fillIfExists(currentRow - 1, currentColumn + 2);
+        fillIfExists(currentRow - 1, currentColumn - 2);
+
+        fillIfExists(currentRow + 1, currentColumn + 2);
+        fillIfExists(currentRow + 1, currentColumn - 2);
+
+        fillIfExists(currentRow + 2, currentColumn + 1);
+        fillIfExists(currentRow + 2, currentColumn - 1);
+
+    }
+
+
+    private void fillSpacesKing(Allocatable piece) {
+
+        int currentRow = piece.getRow();
+        int currentColumn = piece.getColumn();
+
+
         //validate upper row
+        fillIfExists(currentRow - 1, currentColumn);
+        fillIfExists(currentRow - 1, currentColumn - 1);
+        fillIfExists(currentRow - 1, currentColumn +1);
+
+        fillIfExists(currentRow + 1, currentColumn);
+        fillIfExists(currentRow + 1, currentColumn - 1);
+        fillIfExists(currentRow + 1, currentColumn +1);
+
+        fillIfExists(currentRow, currentColumn -1);
+        fillIfExists(currentRow , currentColumn +1);
+
+
+    }
+
+    private void fillIfExists(int row, int column) {
         try{
-            ArrayList<Allocatable> upperRow = mBoard.getBoard().get(currentRow - 1);
+            mBoardMatrix.get(row).get(column).fillSpace();
 
-            upperRow.get(currentColumn).fillSpace();
-            upperRow.get(currentColumn + 1).fillSpace();
-            upperRow.get(currentColumn - 1).fillSpace();
-        }catch (IndexOutOfBoundsException e ){
-            //no upper row
+        }catch (IndexOutOfBoundsException e){
+
         }
-
-        //validate lower row
-        try{
-            ArrayList<Allocatable> lowerRow = mBoard.getBoard().get(currentRow + 1);
-
-            lowerRow.get(currentColumn).fillSpace();
-            lowerRow.get(currentColumn + 1).fillSpace();
-            lowerRow.get(currentColumn - 1).fillSpace();
-        }catch (IndexOutOfBoundsException e ){
-            //no upper row
-        }
-
-        try{
-            ArrayList<Allocatable> currentRowList = mBoard.getBoard().get(currentRow);
-
-            currentRowList.get(currentColumn + 1).fillSpace();
-            currentRowList.get(currentColumn - 1).fillSpace();
-        }catch (IndexOutOfBoundsException e ){
-            //no upper row
-        }
-
-
-        //mKingPieces
-
 
     }
 

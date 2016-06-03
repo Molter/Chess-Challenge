@@ -12,9 +12,10 @@ public class Board {
     private int mRows;
     private int mColumns;
 
-        private PieceBoardAllocator mAllocator;
+    private PieceBoardAllocator mAllocator;
 
     private ArrayList<ArrayList<Allocatable>>  mMatrix = new ArrayList<>();
+
 
 
     /**
