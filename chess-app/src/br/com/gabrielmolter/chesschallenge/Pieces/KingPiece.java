@@ -10,6 +10,8 @@ import static br.com.gabrielmolter.chesschallenge.board.Allocatable.PieceRule.KI
 public class KingPiece  implements Allocatable{
 
     private boolean isEmpty = false;
+    private int mRow;
+    private int mColumn;
 
     @Override
     public boolean isEmpty() {
@@ -17,7 +19,33 @@ public class KingPiece  implements Allocatable{
     }
 
     @Override
+    public void fillSpace() {
+        throw  new InvalidAllocationException();
+    }
+
+    @Override
     public EnumSet<PieceRule> getRules() {
         return  EnumSet.of(KING);
+    }
+
+    @Override
+    public String getDisplayType() {
+        return "KG";
+    }
+
+    @Override
+    public int getRow() {
+        return mRow;
+    }
+
+    @Override
+    public int getColumn() {
+        return mColumn;
+    }
+
+    @Override
+    public void setPosition(int row, int column) {
+        mRow = row;
+        mColumn = column;
     }
 }

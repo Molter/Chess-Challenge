@@ -23,6 +23,9 @@ public class BoardTest {
     public void setUp(){
         Random rand = new Random();
         mBoardSize = rand.nextInt(10);
+
+        if(mBoardSize == 0)
+            mBoardSize = 3;
         mBoard = new Board(mBoardSize, mBoardSize);
         System.out.println("Board Size = " + mBoardSize + " x " + mBoardSize);
     }

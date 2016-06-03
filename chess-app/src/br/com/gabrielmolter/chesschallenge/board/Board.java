@@ -1,5 +1,7 @@
 package br.com.gabrielmolter.chesschallenge.board;
 
+import br.com.gabrielmolter.chesschallenge.Pieces.EmptySpace;
+
 import java.util.ArrayList;
 
 /**
@@ -9,6 +11,8 @@ public class Board {
 
     private int mRows;
     private int mColumns;
+
+        private PieceBoardAllocator mAllocator;
 
     private ArrayList<ArrayList<Allocatable>>  mMatrix = new ArrayList<>();
 
@@ -26,11 +30,12 @@ public class Board {
             ArrayList<Allocatable> row = new ArrayList<>();
 
             for (int j = 0; j < y; j++) {
-                row.add(new EmptySpace());
+                row.add(new EmptySpace(i, j));
             }
             mMatrix.add(row);
         }
 
+        mAllocator = new PieceBoardAllocator(this);
     }
 
     /**
@@ -50,15 +55,16 @@ public class Board {
 
     /**
      * Set a piece into a specific position
-     * @param x Row
-     * @param y Column
+     * @param row Row
+     * @param column Column
      * @param pieceToInsert Piece to be inserted
      */
-    public void setPiece(int x, int y, Allocatable pieceToInsert){
+    public void setPiece(int row, int column, Allocatable pieceToInsert){
         try{
-            mMatrix.get(x).set(y, pieceToInsert);
+            mMatrix.get(row).set(column, pieceToInsert);
+            pieceToInsert.setPosition(row, column);
         }catch (IndexOutOfBoundsException e){
-            System.out.println("x = [" + x + "], y = [" + y + "], pieceToInsert = [" + pieceToInsert + "]");
+            System.out.println("x = [" + row + "], y = [" + column + "], pieceToInsert = [" + pieceToInsert + "]");
             System.out.println("Invalid Position");
             throw e;
         }catch (Exception e){
@@ -82,5 +88,13 @@ public class Board {
         }catch (Exception e){
             throw e;
         }
+    }
+
+    public void displayFreeResults(){
+        BoardDisplayer.showBoardStatus(this);
+    }
+
+    public void allocatePiece(int row, int column, Allocatable piece){
+        mAllocator.allocatePiece(row, column, piece);
     }
 }

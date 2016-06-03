@@ -1,35 +1,51 @@
 package br.com.gabrielmolter.chesschallenge.Pieces;
 
+import br.com.gabrielmolter.chesschallenge.Pieces.InvalidAllocationException;
 import br.com.gabrielmolter.chesschallenge.board.Allocatable;
+
 import java.util.EnumSet;
-import static br.com.gabrielmolter.chesschallenge.board.Allocatable.PieceRule.*;
 
 /**
- * Created by Gabriel Molter on 31/05/2016 at 23:09 BRT.
+ * Created by Gabriel Molter on 31/05/2016 at 01:22 BRT.
  */
-public class QueenPiece implements Allocatable{
+public class EmptySpace  implements Allocatable {
 
+    private boolean isEmpty = true;
     private int mRow;
     private int mColumn;
 
+    public EmptySpace(){}
+
+    public EmptySpace(int row, int column){
+        setPosition(row, column);
+    }
+
+
+
     @Override
-    public boolean isEmpty() {
-        return false;
+    public boolean isEmpty(){
+        return isEmpty;
     }
 
     @Override
     public void fillSpace() {
-        throw  new InvalidAllocationException();
+        if (!isEmpty()){
+            throw  new InvalidAllocationException();
+        }
+        isEmpty = false;
     }
 
     @Override
     public EnumSet<PieceRule> getRules() {
-        return EnumSet.of(NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST);
+        return EnumSet.of(PieceRule.NONE);
     }
 
     @Override
     public String getDisplayType() {
-        return "Q";
+        if(isEmpty)
+            return "E";
+        else
+            return "I";
     }
 
     @Override
