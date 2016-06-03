@@ -45,9 +45,9 @@ public class AllocationTest {
 
     @Test
     public void validateAllocationFirstMiddle(){
-        Board board = new Board(3, 3);
+        
         mBoard.allocatePiece(0,1, new KingPiece());
-        mBoard.displayFreeResults();
+        
 
         assertTrue(!mBoard.getPiece(0,0).isEmpty());
         assertTrue(!mBoard.getPiece(0,1).isEmpty());
@@ -64,9 +64,9 @@ public class AllocationTest {
 
     @Test
     public void validateAllocationFirstRight(){
-        Board board = new Board(3, 3);
+        
         mBoard.allocatePiece(0,2, new KingPiece());
-        mBoard.displayFreeResults();
+        
 
         assertTrue(mBoard.getPiece(0,0).isEmpty());
         assertTrue(!mBoard.getPiece(0,1).isEmpty());
@@ -83,9 +83,9 @@ public class AllocationTest {
 
     @Test
     public void validateAllocationMidleLeft(){
-        Board board = new Board(3, 3);
+        
         mBoard.allocatePiece(1,0, new KingPiece());
-        mBoard.displayFreeResults();
+        
 
         assertTrue(!mBoard.getPiece(0,0).isEmpty());
         assertTrue(!mBoard.getPiece(0,1).isEmpty());
@@ -103,9 +103,9 @@ public class AllocationTest {
 
     @Test
     public void validateAllocationMiddleMiddle(){
-        Board board = new Board(3, 3);
+        
         mBoard.allocatePiece(1,1, new KingPiece());
-        mBoard.displayFreeResults();
+        
 
         assertFalse(mBoard.getPiece(0,0).isEmpty());
         assertFalse(mBoard.getPiece(0,1).isEmpty());
@@ -122,9 +122,9 @@ public class AllocationTest {
 
     @Test
     public void validateAllocationMidleRight(){
-        Board board = new Board(3, 3);
+        
         mBoard.allocatePiece(1,2, new KingPiece());
-        mBoard.displayFreeResults();
+        
 
         assertTrue(mBoard.getPiece(0,0).isEmpty());
         assertTrue(!mBoard.getPiece(0,1).isEmpty());
@@ -141,9 +141,9 @@ public class AllocationTest {
 
     @Test
     public void validateAllocationBottonRight(){
-        Board board = new Board(3, 3);
+        
         mBoard.allocatePiece(2,2, new KingPiece());
-        mBoard.displayFreeResults();
+        
 
         assertTrue(mBoard.getPiece(0,0).isEmpty());
         assertTrue(mBoard.getPiece(0,1).isEmpty());
@@ -161,9 +161,9 @@ public class AllocationTest {
 
     @Test
     public void validateAllocationBottonLeft(){
-        Board board = new Board(3, 3);
+        
         mBoard.allocatePiece(2,0, new KingPiece());
-        mBoard.displayFreeResults();
+        
 
         assertTrue(mBoard.getPiece(0,0).isEmpty());
         assertTrue(mBoard.getPiece(0,1).isEmpty());
@@ -181,7 +181,7 @@ public class AllocationTest {
     @Test
     public void validateAllocationBottonMiddle(){
         mBoard.allocatePiece(2,1, new KingPiece());
-        mBoard.displayFreeResults();
+        
 
         assertTrue(mBoard.getPiece(0,0).isEmpty());
         assertTrue(mBoard.getPiece(0,1).isEmpty());
