@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Gabriel Molter on 30/05/2016 at 21:57 BRT.
+ * Main chess board class
  */
 public class Board {
 
@@ -46,10 +47,18 @@ public class Board {
         return mMatrix;
     }
 
+    /**
+     * Get the total board rows
+     * @return number of rows
+     */
     public int getNumberOfRows() {
         return mRows;
     }
 
+    /**
+     * Get the total board columns
+     * @return number of Columns
+     */
     public int getNumberOfColumns() {
         return mColumns;
     }
@@ -91,10 +100,19 @@ public class Board {
         }
     }
 
-    public void displayFreeResults(){
+    /**
+     * Print the current board
+     */
+    public void displayBoard(){
         BoardDisplayer.showBoardStatus(this);
     }
 
+    /**
+     * Allocates a piece at a given  position on the board
+     * @param row Row index
+     * @param column Column Index
+     * @param piece Allocable piece to be placed.
+     */
     public void allocatePiece(int row, int column, Allocatable piece){
         mAllocator.allocatePiece(row, column, piece);
     }

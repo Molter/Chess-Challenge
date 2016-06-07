@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Gabriel Molter on 01/06/2016 at 12:33 BRT.
  */
-public class AllocationTest {
+public class AllocationKingTest {
 
     private Board mBoard;
 
@@ -21,7 +21,7 @@ public class AllocationTest {
     
     @After
     public void tearDown(){
-        mBoard.displayFreeResults();
+        mBoard.displayBoard();
     }
 
 
@@ -76,9 +76,9 @@ public class AllocationTest {
         assertTrue(!mBoard.getPiece(1,1).isEmpty());
         assertTrue(!mBoard.getPiece(1,2).isEmpty());
 
-        assertTrue(!mBoard.getPiece(2,0).isEmpty());
-        assertTrue(!mBoard.getPiece(2,1).isEmpty());
-        assertTrue(!mBoard.getPiece(2,2).isEmpty());
+        assertTrue(mBoard.getPiece(2,0).isEmpty());
+        assertTrue(mBoard.getPiece(2,1).isEmpty());
+        assertTrue(mBoard.getPiece(2,2).isEmpty());
     }
 
     @Test
@@ -153,7 +153,7 @@ public class AllocationTest {
         assertTrue(!mBoard.getPiece(1,1).isEmpty());
         assertTrue(!mBoard.getPiece(1,2).isEmpty());
 
-        assertTrue(!mBoard.getPiece(2,0).isEmpty());
+        assertTrue(mBoard.getPiece(2,0).isEmpty());
         assertTrue(!mBoard.getPiece(2,1).isEmpty());
         assertTrue(!mBoard.getPiece(2,2).isEmpty());
     }
@@ -195,4 +195,7 @@ public class AllocationTest {
         assertTrue(!mBoard.getPiece(2,1).isEmpty());
         assertTrue(!mBoard.getPiece(2,2).isEmpty());
     }
+
+
+
 }

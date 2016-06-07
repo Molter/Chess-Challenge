@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by Gabriel Molter on 31/05/2016 at 01:21 BRT.
+ * Interface designed to store the default board space
  */
 public interface Allocatable {
 

@@ -1,5 +1,7 @@
 package br.com.gabrielmolter.chesschallenge.board;
 
+import br.com.gabrielmolter.chesschallenge.Pieces.InvalidAllocationException;
+
 import java.util.ArrayList;
 
 /**
@@ -19,56 +21,63 @@ public class PieceBoardAllocator {
     private ArrayList<Allocatable> mSouthPieces = new ArrayList<>();
     private ArrayList<Allocatable> mSouthEastPieces = new ArrayList<>();
     private ArrayList<Allocatable> mSouthWestPieces = new ArrayList<>();
-    private ArrayList<Allocatable> mKingPieces = new ArrayList<>();
-    private ArrayList<Allocatable> mKnightPieces = new ArrayList<>();
 
-
+    /**
+     * Constructor
+     * @param board Parent Board
+     */
     public PieceBoardAllocator (Board board){
 
         mBoard = board;
         mBoardMatrix = mBoard.getBoard();
     }
 
-    public boolean allocatePiece(int row, int column, Allocatable piece){
+    /**
+     * Allocate a piece on the board and invalidate the respective positions
+     * @param row Row index
+     * @param column Columnn Index
+     * @param piece Allocatable piece
+     */
+    public void allocatePiece(int row, int column, Allocatable piece){
         if(!mBoard.getPiece(row, column).isEmpty()){
-            // not empty space
-            return false;
+            throw new InvalidAllocationException();
         }
 
         mBoard.setPiece(row, column, piece);
         FlagAllInvalidSpaces(piece);
-
-        return true;
     }
 
 
-
+    /**
+     * For each piece rule, invalidate the board positions that cannot be used
+     * @param piece Allocatable piece
+     */
     private void FlagAllInvalidSpaces(Allocatable piece) {
         for (Allocatable.PieceRule rule: piece.getRules()){
             switch (rule){
                 case NORTH:
-                    fillSpaces(mNorthPieces);
+                    fillSpaces(mNorthPieces, piece);
                     break;
                 case SOUTH:
-                    fillSpaces(mSouthPieces);
+                    fillSpaces(mSouthPieces, piece);
                     break;
                 case EAST:
-                    fillSpaces(mEastPieces);
+                    fillSpaces(mEastPieces, piece);
                     break;
                 case WEST:
-                    fillSpaces(mWeastPieces);
+                    fillSpaces(mWeastPieces, piece);
                     break;
                 case NORTHEAST:
-                    fillSpaces(mNorthEastPieces);
+                    fillSpaces(mNorthEastPieces, piece);
                     break;
                 case NORTHWEST:
-                    fillSpaces(mNorthWestPieces);
+                    fillSpaces(mNorthWestPieces, piece);
                     break;
                 case SOUTHEAST:
-                    fillSpaces(mSouthEastPieces);
+                    fillSpaces(mSouthEastPieces, piece);
                     break;
                 case SOUTHWEST:
-                    fillSpaces(mSouthWestPieces);
+                    fillSpaces(mSouthWestPieces, piece);
                     break;
                 case KING:
                     fillSpacesKing(piece);
@@ -83,6 +92,10 @@ public class PieceBoardAllocator {
         }
     }
 
+    /**
+     * Specific method for Knight
+     * @param piece Knight piece
+     */
     private void fillSpacesKnight(Allocatable piece) {
 
         int currentRow = piece.getRow();
@@ -102,7 +115,10 @@ public class PieceBoardAllocator {
 
     }
 
-
+    /**
+     * Specific method for King
+     * @param piece King piece
+     */
     private void fillSpacesKing(Allocatable piece) {
 
         int currentRow = piece.getRow();
@@ -124,25 +140,42 @@ public class PieceBoardAllocator {
 
     }
 
+    /**
+     * Fill the space if possible.
+     * @param row
+     * @param column
+     */
     private void fillIfExists(int row, int column) {
+
         try{
+
+            if(row > mBoardMatrix.size() || row < 0){
+                return;
+            }
+            if(column >  mBoardMatrix.get(row).size() || column < 0){
+                return;
+            }
+
             mBoardMatrix.get(row).get(column).fillSpace();
 
         }catch (IndexOutOfBoundsException e){
-
+            //invalid row, nothing to do right now.
         }
 
     }
 
-    private void fillSpaces(ArrayList<Allocatable> pieces) {
-        for (Allocatable piece :
+    /**
+     * Fill spaces array
+     * @param pieces
+     * @param piece
+     */
+    private void fillSpaces(ArrayList<Allocatable> pieces, Allocatable piece) {
+
+
+        for (Allocatable cell :
                 pieces) {
-            piece.fillSpace();
+            cell.fillSpace();
         }
-    }
-
-    private void findSpaces(Allocatable.PieceRule rule) {
-        //get the
     }
 
 
