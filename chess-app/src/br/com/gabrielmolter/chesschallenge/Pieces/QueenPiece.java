@@ -29,7 +29,7 @@ public class QueenPiece implements Allocatable{
 
     @Override
     public String getDisplayType() {
-        return "Q";
+        return "QN";
     }
 
     @Override

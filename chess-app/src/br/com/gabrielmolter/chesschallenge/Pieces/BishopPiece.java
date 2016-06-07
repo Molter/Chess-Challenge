@@ -31,7 +31,7 @@ public class BishopPiece implements Allocatable {
 
     @Override
     public String getDisplayType() {
-        return "B";
+        return "BI";
     }
 
     @Override

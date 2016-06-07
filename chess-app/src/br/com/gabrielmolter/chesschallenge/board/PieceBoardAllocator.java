@@ -13,7 +13,6 @@ public class PieceBoardAllocator {
     private Board mBoard;
 
 
-    private ArrayList<Allocatable> mNorthPieces = new ArrayList<>();
     private ArrayList<Allocatable> mNorthEastPieces = new ArrayList<>();
     private ArrayList<Allocatable> mNorthWestPieces = new ArrayList<>();
     private ArrayList<Allocatable> mEastPieces = new ArrayList<>();
@@ -56,28 +55,28 @@ public class PieceBoardAllocator {
         for (Allocatable.PieceRule rule: piece.getRules()){
             switch (rule){
                 case NORTH:
-                    fillSpaces(mNorthPieces, piece);
+                    fillSpacesNorth(piece);
                     break;
                 case SOUTH:
-                    fillSpaces(mSouthPieces, piece);
+                    fillSpacesSouth(piece);
                     break;
                 case EAST:
-                    fillSpaces(mEastPieces, piece);
+                    fillSpacesEastPieces(piece);
                     break;
                 case WEST:
-                    fillSpaces(mWeastPieces, piece);
+                    fillSpacesWestPieces(piece);
                     break;
                 case NORTHEAST:
-                    fillSpaces(mNorthEastPieces, piece);
+                    fillSpacesNorthEastPieces(piece);
                     break;
                 case NORTHWEST:
-                    fillSpaces(mNorthWestPieces, piece);
+                    fillSpacesNorthWestPieces(piece);
                     break;
                 case SOUTHEAST:
-                    fillSpaces(mSouthEastPieces, piece);
+                    fillSpacesSouthEastPieces(piece);
                     break;
                 case SOUTHWEST:
-                    fillSpaces(mSouthWestPieces, piece);
+                    fillSpacesSouthWestPieces(piece);
                     break;
                 case KING:
                     fillSpacesKing(piece);
@@ -89,6 +88,102 @@ public class PieceBoardAllocator {
                 default:
                     break;
             }
+        }
+    }
+
+    /**
+     * Fill all the spaces to the bottom-left of the piece
+     * @param piece
+     */
+    private void fillSpacesSouthWestPieces(Allocatable piece) {
+        int currentColumn = piece.getColumn();
+
+        for (int i = piece.getRow() - 1; i >= 0 ; i--) {
+            fillIfExists(i, --currentColumn);
+        }
+    }
+
+    /**
+     * Fill all the spaces to the bottom-right of the piece
+     * @param piece
+     */
+    private void fillSpacesSouthEastPieces(Allocatable piece) {
+        int currentColumn = piece.getColumn();
+
+        for (int i = piece.getRow() - 1; i >= 0 ; i--) {
+            fillIfExists(i, ++currentColumn);
+        }
+    }
+
+    /**
+     * Fill all the spaces to the up-left of the piece
+     * @param piece
+     */
+    private void fillSpacesNorthWestPieces(Allocatable piece) {
+        int currentColumn = piece.getColumn();
+
+        for (int i = piece.getRow() + 1; i < mBoardMatrix.size() ; i++) {
+            fillIfExists(i, --currentColumn);
+        }
+    }
+
+    /**
+     * Fill all the spaces to the up-right of the piece
+     * @param piece
+     */
+    private void fillSpacesNorthEastPieces(Allocatable piece) {
+        int currentColumn = piece.getColumn();
+
+        for (int i = piece.getRow() + 1; i < mBoardMatrix.size() ; i++) {
+            fillIfExists(i, ++currentColumn);
+        }
+    }
+
+    /**
+     * Fill all the spaces to the left of the piece
+     * @param piece
+     */
+    private void fillSpacesWestPieces(Allocatable piece) {
+        int currentRow = piece.getRow();
+
+        for (int i = piece.getColumn() - 1; i >= 0 ; i--) {
+            fillIfExists(currentRow, i);
+        }
+    }
+
+    /**
+     * Fill all the spaces to the right of the piece
+     * @param piece
+     */
+    private void fillSpacesEastPieces(Allocatable piece) {
+        int currentRow = piece.getRow();
+
+        for (int i = piece.getColumn() + 1; i < mBoardMatrix.get(piece.getRow()).size() ; i++) {
+            fillIfExists(currentRow, i);
+        }
+    }
+
+    /**
+     * Fill all the spaces below the piece
+     * @param piece
+     */
+    private void fillSpacesSouth(Allocatable piece) {
+        int currentColumn = piece.getColumn();
+
+        for (int i = piece.getRow() + 1; i < mBoardMatrix.size() ; i++) {
+            fillIfExists(i, currentColumn);
+        }
+    }
+
+    /**
+     * * Fill all the spaces above the piece
+     * @param piece
+     */
+    private void fillSpacesNorth(Allocatable piece) {
+        int currentColumn = piece.getColumn();
+
+        for (int i = piece.getRow() - 1; i >= 0 ; i--) {
+            fillIfExists(i, currentColumn);
         }
     }
 

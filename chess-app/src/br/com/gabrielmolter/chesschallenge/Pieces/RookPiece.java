@@ -31,7 +31,7 @@ public class RookPiece implements Allocatable {
 
     @Override
     public String getDisplayType() {
-        return "Q";
+        return "RO";
     }
 
     @Override
