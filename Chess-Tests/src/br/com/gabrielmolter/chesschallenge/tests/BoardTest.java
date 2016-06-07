@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -43,7 +44,7 @@ public class BoardTest {
 
     @Test
     public void validateBoardEmptiness(){
-        for (ArrayList<Allocatable> row : mBoard.getBoard()){
+        for (List<Allocatable> row : mBoard.getBoard()){
             for (Allocatable cell :
                     row) {
                 assertTrue(cell.isEmpty());
@@ -55,16 +56,16 @@ public class BoardTest {
     public void allocatePiece(){
         Allocatable piece =  new KingPiece();
 
-        mBoard.setPiece(0, 0, piece);
+        mBoard.allocatePiece(0, 0, piece);
         assertEquals(mBoard.getPiece(0, 0), piece);
 
         piece =  new KingPiece();
-        mBoard.setPiece(0, mBoardSize - 1, piece);
+        mBoard.allocatePiece(0, mBoardSize - 1, piece);
         assertEquals(mBoard.getPiece(0, mBoardSize - 1), piece);
 
 
         piece =  new KingPiece();
-        mBoard.setPiece(mBoardSize - 1, 0, piece);
+        mBoard.allocatePiece(mBoardSize - 1, 0, piece);
         assertEquals(mBoard.getPiece(mBoardSize - 1, 0), piece);
     }
 

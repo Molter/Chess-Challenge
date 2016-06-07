@@ -3,6 +3,7 @@ package br.com.gabrielmolter.chesschallenge.board;
 import br.com.gabrielmolter.chesschallenge.Pieces.EmptySpace;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Gabriel Molter on 30/05/2016 at 21:57 BRT.
@@ -12,10 +13,12 @@ public class Board {
 
     private int mRows;
     private int mColumns;
+    private int mTotalPiecesAllocated;
+    private int mTotalPiecesToAllocate;
 
     private PieceBoardAllocator mAllocator;
 
-    private ArrayList<ArrayList<Allocatable>>  mMatrix = new ArrayList<>();
+    private List<List<Allocatable>> mMatrix = new ArrayList<>();
 
 
 
@@ -43,7 +46,7 @@ public class Board {
     /**
      * Main Board matrix
      */
-    public ArrayList<ArrayList<Allocatable>> getBoard() {
+    public List<List<Allocatable>> getBoard() {
         return mMatrix;
     }
 
@@ -69,7 +72,7 @@ public class Board {
      * @param column Column
      * @param pieceToInsert Piece to be inserted
      */
-    public void setPiece(int row, int column, Allocatable pieceToInsert){
+    protected void setPiece(int row, int column, Allocatable pieceToInsert){
         try{
             mMatrix.get(row).set(column, pieceToInsert);
             pieceToInsert.setPosition(row, column);
@@ -115,5 +118,22 @@ public class Board {
      */
     public void allocatePiece(int row, int column, Allocatable piece){
         mAllocator.allocatePiece(row, column, piece);
+    }
+
+    /**
+     * Verify if there is any empty cell on the board
+     * @return
+     */
+    public boolean isBoardFull(){
+        for (List<Allocatable> row :
+                mMatrix) {
+            for (Allocatable cell :
+                    row) {
+                if(cell.isEmpty()){
+                    return  false;
+                }
+            }
+        }
+        return true;
     }
 }

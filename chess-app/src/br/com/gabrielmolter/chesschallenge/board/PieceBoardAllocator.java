@@ -3,23 +3,16 @@ package br.com.gabrielmolter.chesschallenge.board;
 import br.com.gabrielmolter.chesschallenge.Pieces.InvalidAllocationException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Gabriel Molter on 31/05/2016 at 23:23 BRT.
  */
 public class PieceBoardAllocator {
 
-    private final ArrayList<ArrayList<Allocatable>> mBoardMatrix;
+    private final List<List<Allocatable>> mBoardMatrix;
     private Board mBoard;
 
-
-    private ArrayList<Allocatable> mNorthEastPieces = new ArrayList<>();
-    private ArrayList<Allocatable> mNorthWestPieces = new ArrayList<>();
-    private ArrayList<Allocatable> mEastPieces = new ArrayList<>();
-    private ArrayList<Allocatable> mWeastPieces = new ArrayList<>();
-    private ArrayList<Allocatable> mSouthPieces = new ArrayList<>();
-    private ArrayList<Allocatable> mSouthEastPieces = new ArrayList<>();
-    private ArrayList<Allocatable> mSouthWestPieces = new ArrayList<>();
 
     /**
      * Constructor
@@ -258,20 +251,4 @@ public class PieceBoardAllocator {
         }
 
     }
-
-    /**
-     * Fill spaces array
-     * @param pieces
-     * @param piece
-     */
-    private void fillSpaces(ArrayList<Allocatable> pieces, Allocatable piece) {
-
-
-        for (Allocatable cell :
-                pieces) {
-            cell.fillSpace();
-        }
-    }
-
-
 }
