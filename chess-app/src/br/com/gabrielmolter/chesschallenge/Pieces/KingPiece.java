@@ -1,7 +1,9 @@
 package br.com.gabrielmolter.chesschallenge.Pieces;
 
 import br.com.gabrielmolter.chesschallenge.board.Allocatable;
+
 import java.util.EnumSet;
+
 import static br.com.gabrielmolter.chesschallenge.board.Allocatable.PieceRule.KING;
 
 /**
@@ -47,5 +49,14 @@ public class KingPiece  implements Allocatable{
     public void setPosition(int row, int column) {
         mRow = row;
         mColumn = column;
+    }
+
+    @Override
+    public Allocatable createCopy() {
+        KingPiece piece = new KingPiece();
+        piece.mRow = mRow;
+        piece.mColumn = mColumn;
+
+        return piece;
     }
 }

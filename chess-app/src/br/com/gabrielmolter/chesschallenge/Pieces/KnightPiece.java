@@ -48,4 +48,13 @@ public class KnightPiece implements Allocatable {
         mRow = row;
         mColumn = column;
     }
+
+    @Override
+    public Allocatable createCopy() {
+        KnightPiece piece = new KnightPiece();
+        piece.mRow = mRow;
+        piece.mColumn = mColumn;
+
+        return piece;
+    }
 }

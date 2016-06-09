@@ -1,8 +1,8 @@
 package br.com.gabrielmolter.chesschallenge.board;
 
+import br.com.gabrielmolter.chesschallenge.Pieces.EmptySpace;
 import br.com.gabrielmolter.chesschallenge.Pieces.InvalidAllocationException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,14 +29,16 @@ public class PieceBoardAllocator {
      * @param row Row index
      * @param column Columnn Index
      * @param piece Allocatable piece
+     * @return Piece was allocated?
      */
-    public void allocatePiece(int row, int column, Allocatable piece){
-        if(!mBoard.getPiece(row, column).isEmpty()){
+    public boolean allocatePiece(int row, int column, Allocatable piece){
+        if(!(mBoard.getPiece(row, column) instanceof EmptySpace) && !mBoard.getPiece(row, column).isEmpty() ){
             throw new InvalidAllocationException();
         }
-
         mBoard.setPiece(row, column, piece);
-        FlagAllInvalidSpaces(piece);
+
+        boolean isValidAllocation = FlagAllInvalidSpaces(piece);
+        return isValidAllocation;
     }
 
 
@@ -44,162 +46,228 @@ public class PieceBoardAllocator {
      * For each piece rule, invalidate the board positions that cannot be used
      * @param piece Allocatable piece
      */
-    private void FlagAllInvalidSpaces(Allocatable piece) {
+    private boolean FlagAllInvalidSpaces(Allocatable piece) {
+        boolean isValidAllocation;
         for (Allocatable.PieceRule rule: piece.getRules()){
             switch (rule){
                 case NORTH:
-                    fillSpacesNorth(piece);
+                    isValidAllocation = fillSpacesNorth(piece);
                     break;
                 case SOUTH:
-                    fillSpacesSouth(piece);
+                    isValidAllocation =   fillSpacesSouth(piece);
                     break;
                 case EAST:
-                    fillSpacesEastPieces(piece);
+                    isValidAllocation =   fillSpacesEastPieces(piece);
                     break;
                 case WEST:
-                    fillSpacesWestPieces(piece);
+                    isValidAllocation =   fillSpacesWestPieces(piece);
                     break;
                 case NORTHEAST:
-                    fillSpacesNorthEastPieces(piece);
+                    isValidAllocation =   fillSpacesNorthEastPieces(piece);
                     break;
                 case NORTHWEST:
-                    fillSpacesNorthWestPieces(piece);
+                    isValidAllocation =   fillSpacesNorthWestPieces(piece);
                     break;
                 case SOUTHEAST:
-                    fillSpacesSouthEastPieces(piece);
+                    isValidAllocation =   fillSpacesSouthEastPieces(piece);
                     break;
                 case SOUTHWEST:
-                    fillSpacesSouthWestPieces(piece);
+                    isValidAllocation =   fillSpacesSouthWestPieces(piece);
                     break;
                 case KING:
-                    fillSpacesKing(piece);
+                    isValidAllocation =    fillSpacesKing(piece);
                     break;
                 case KNIGHT:
-                    fillSpacesKnight(piece);
+                    isValidAllocation =  fillSpacesKnight(piece);
                     break;
                 case NONE:
                 default:
+                    isValidAllocation = true;
                     break;
             }
+            if(!isValidAllocation){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * Fill all the spaces to the bottom-left of the piece
      * @param piece
      */
-    private void fillSpacesSouthWestPieces(Allocatable piece) {
+    private boolean fillSpacesSouthWestPieces(Allocatable piece) {
         int currentColumn = piece.getColumn();
+        boolean isValidAllocation;
 
         for (int i = piece.getRow() - 1; i >= 0 ; i--) {
-            fillIfExists(i, --currentColumn);
+            isValidAllocation = fillIfExists(i, --currentColumn);
+            if(!isValidAllocation){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * Fill all the spaces to the bottom-right of the piece
      * @param piece
      */
-    private void fillSpacesSouthEastPieces(Allocatable piece) {
+    private boolean fillSpacesSouthEastPieces(Allocatable piece) {
         int currentColumn = piece.getColumn();
+        boolean isValidAllocation;
 
         for (int i = piece.getRow() - 1; i >= 0 ; i--) {
-            fillIfExists(i, ++currentColumn);
+            isValidAllocation = fillIfExists(i, ++currentColumn);
+            if(!isValidAllocation){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * Fill all the spaces to the up-left of the piece
      * @param piece
      */
-    private void fillSpacesNorthWestPieces(Allocatable piece) {
+    private boolean fillSpacesNorthWestPieces(Allocatable piece) {
         int currentColumn = piece.getColumn();
+        boolean isValidAllocation;
 
         for (int i = piece.getRow() + 1; i < mBoardMatrix.size() ; i++) {
-            fillIfExists(i, --currentColumn);
+            isValidAllocation = fillIfExists(i, --currentColumn);
+            if(!isValidAllocation){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * Fill all the spaces to the up-right of the piece
      * @param piece
      */
-    private void fillSpacesNorthEastPieces(Allocatable piece) {
+    private boolean fillSpacesNorthEastPieces(Allocatable piece) {
         int currentColumn = piece.getColumn();
+        boolean isValidAllocation;
 
         for (int i = piece.getRow() + 1; i < mBoardMatrix.size() ; i++) {
-            fillIfExists(i, ++currentColumn);
+            isValidAllocation = fillIfExists(i, ++currentColumn);
+            if(!isValidAllocation){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * Fill all the spaces to the left of the piece
      * @param piece
      */
-    private void fillSpacesWestPieces(Allocatable piece) {
+    private boolean fillSpacesWestPieces(Allocatable piece) {
         int currentRow = piece.getRow();
+        boolean isValidAllocation;
 
         for (int i = piece.getColumn() - 1; i >= 0 ; i--) {
-            fillIfExists(currentRow, i);
+            isValidAllocation = fillIfExists(currentRow, i);
+            if(!isValidAllocation){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * Fill all the spaces to the right of the piece
      * @param piece
      */
-    private void fillSpacesEastPieces(Allocatable piece) {
+    private boolean fillSpacesEastPieces(Allocatable piece) {
         int currentRow = piece.getRow();
-
+        boolean isValidAllocation;
         for (int i = piece.getColumn() + 1; i < mBoardMatrix.get(piece.getRow()).size() ; i++) {
-            fillIfExists(currentRow, i);
+            isValidAllocation = fillIfExists(currentRow, i);
+            if(!isValidAllocation){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * Fill all the spaces below the piece
      * @param piece
      */
-    private void fillSpacesSouth(Allocatable piece) {
+    private boolean fillSpacesSouth(Allocatable piece) {
         int currentColumn = piece.getColumn();
-
+        boolean isValidAllocation;
         for (int i = piece.getRow() + 1; i < mBoardMatrix.size() ; i++) {
-            fillIfExists(i, currentColumn);
+            isValidAllocation = fillIfExists(i, currentColumn);
+            if(!isValidAllocation){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * * Fill all the spaces above the piece
      * @param piece
      */
-    private void fillSpacesNorth(Allocatable piece) {
+    private boolean fillSpacesNorth(Allocatable piece) {
         int currentColumn = piece.getColumn();
-
+        boolean isValidAllocation;
         for (int i = piece.getRow() - 1; i >= 0 ; i--) {
-            fillIfExists(i, currentColumn);
+            isValidAllocation = fillIfExists(i, currentColumn);
+            if(!isValidAllocation){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * Specific method for Knight
      * @param piece Knight piece
      */
-    private void fillSpacesKnight(Allocatable piece) {
+    private boolean fillSpacesKnight(Allocatable piece) {
 
         int currentRow = piece.getRow();
         int currentColumn = piece.getColumn();
+        boolean isValidAllocation;
 
-        fillIfExists(currentRow - 2, currentColumn + 1);
+        isValidAllocation = fillIfExists(currentRow - 2, currentColumn + 1);
+        if(!isValidAllocation){
+            return false;
+        }
         fillIfExists(currentRow - 2, currentColumn - 1);
+        if(!isValidAllocation){
+            return false;
+        }
 
-        fillIfExists(currentRow - 1, currentColumn + 2);
-        fillIfExists(currentRow - 1, currentColumn - 2);
+        isValidAllocation = fillIfExists(currentRow - 1, currentColumn + 2);
+        if(!isValidAllocation){
+            return false;
+        }
+        isValidAllocation = fillIfExists(currentRow - 1, currentColumn - 2);
+        if(!isValidAllocation){
+            return false;
+        }
 
-        fillIfExists(currentRow + 1, currentColumn + 2);
-        fillIfExists(currentRow + 1, currentColumn - 2);
+        isValidAllocation = fillIfExists(currentRow + 1, currentColumn + 2);
+        if(!isValidAllocation){
+            return false;
+        }
+        isValidAllocation = fillIfExists(currentRow + 1, currentColumn - 2);
+        if(!isValidAllocation){
+            return false;
+        }
 
-        fillIfExists(currentRow + 2, currentColumn + 1);
-        fillIfExists(currentRow + 2, currentColumn - 1);
+        isValidAllocation = fillIfExists(currentRow + 2, currentColumn + 1);
+        if(!isValidAllocation){
+            return false;
+        }
+        isValidAllocation = fillIfExists(currentRow + 2, currentColumn - 1);
+        return isValidAllocation;
 
     }
 
@@ -207,47 +275,74 @@ public class PieceBoardAllocator {
      * Specific method for King
      * @param piece King piece
      */
-    private void fillSpacesKing(Allocatable piece) {
+    private boolean fillSpacesKing(Allocatable piece) {
 
         int currentRow = piece.getRow();
         int currentColumn = piece.getColumn();
 
-
+        boolean isValidAllocation;
         //validate upper row
-        fillIfExists(currentRow - 1, currentColumn);
-        fillIfExists(currentRow - 1, currentColumn - 1);
-        fillIfExists(currentRow - 1, currentColumn +1);
-
-        fillIfExists(currentRow + 1, currentColumn);
-        fillIfExists(currentRow + 1, currentColumn - 1);
-        fillIfExists(currentRow + 1, currentColumn +1);
-
-        fillIfExists(currentRow, currentColumn -1);
-        fillIfExists(currentRow , currentColumn +1);
-
+        isValidAllocation = fillIfExists(currentRow - 1, currentColumn);
+        if(!isValidAllocation){
+            return false;
+        }
+        isValidAllocation = fillIfExists(currentRow - 1, currentColumn - 1);
+        if(!isValidAllocation){
+            return false;
+        }
+        isValidAllocation = fillIfExists(currentRow - 1, currentColumn +1);
+        if(!isValidAllocation){
+            return false;
+        }
+        isValidAllocation = fillIfExists(currentRow + 1, currentColumn);
+        if(!isValidAllocation){
+            return false;
+        }
+        isValidAllocation = fillIfExists(currentRow + 1, currentColumn - 1);
+        if(!isValidAllocation){
+            return false;
+        }
+        isValidAllocation = fillIfExists(currentRow + 1, currentColumn +1);
+        if(!isValidAllocation){
+            return false;
+        }
+        isValidAllocation = fillIfExists(currentRow, currentColumn -1);
+        if(!isValidAllocation){
+            return false;
+        }
+        isValidAllocation = fillIfExists(currentRow , currentColumn +1);
+        return isValidAllocation;
 
     }
+
+
 
     /**
      * Fill the space if possible.
      * @param row
      * @param column
+     * @return Space was filled
      */
-    private void fillIfExists(int row, int column) {
+    private boolean fillIfExists(int row, int column) {
 
         try{
-
             if(row > mBoardMatrix.size() || row < 0){
-                return;
+                return true;
             }
             if(column >  mBoardMatrix.get(row).size() || column < 0){
-                return;
+                return true;
             }
 
-            mBoardMatrix.get(row).get(column).fillSpace();
+            if(mBoardMatrix.get(row).get(column).isEmpty() ||  mBoardMatrix.get(row).get(column) instanceof  EmptySpace){
+                mBoardMatrix.get(row).get(column).fillSpace();
+                return true;
+            }
+
+            return false;
 
         }catch (IndexOutOfBoundsException e){
-            //invalid row, nothing to do right now.
+            //invalid cell, nothing to do right now.
+            return true;
         }
 
     }

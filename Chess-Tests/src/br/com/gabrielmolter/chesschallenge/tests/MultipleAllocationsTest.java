@@ -1,6 +1,7 @@
 package br.com.gabrielmolter.chesschallenge.tests;
 
 import br.com.gabrielmolter.chesschallenge.Pieces.KingPiece;
+import br.com.gabrielmolter.chesschallenge.Pieces.RookPiece;
 import br.com.gabrielmolter.chesschallenge.board.Allocatable;
 import br.com.gabrielmolter.chesschallenge.board.Board;
 import br.com.gabrielmolter.chesschallenge.board.BoardAllocator;
@@ -9,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -33,15 +33,46 @@ public class MultipleAllocationsTest {
     }
 
     @Test
-    public void allocatePieces(){
+    public void allocateSinglePiece(){
+        ArrayList<Allocatable> pieces = new ArrayList<>();
+        pieces.add(new KingPiece());
 
-        mBoardAllocator.findAllocations( new ArrayList<Allocatable>() {{
-            new KingPiece();
-            new KingPiece();
-            new KingPiece();
-        }});
+        mBoardAllocator.definePieceSet(pieces);
 
-        assertTrue(mBoardAllocator.isConfigurationValid());
+        mBoardAllocator.start();
+        assertTrue(mBoardAllocator.isAnyConfigurationValid());
+        assertEquals(9, mBoardAllocator.numberOfResults());
+
+    }
+
+    @Test
+    public void allocateTwoPieces(){
+
+        ArrayList<Allocatable> pieces = new ArrayList<>();
+        pieces.add(new KingPiece());
+        pieces.add(new KingPiece());
+
+        mBoardAllocator.definePieceSet(pieces);
+
+        mBoardAllocator.start();
+        assertTrue(mBoardAllocator.isAnyConfigurationValid());
+
+        assertEquals(32, mBoardAllocator.numberOfResults());
+    }
+
+    @Test
+    public void allocateTreePieces(){
+
+        ArrayList<Allocatable> pieces = new ArrayList<>();
+        pieces.add(new KingPiece());
+        pieces.add(new KingPiece());
+        pieces.add(new RookPiece());
+
+        mBoardAllocator.definePieceSet(pieces);
+
+        mBoardAllocator.start();
+        assertTrue(mBoardAllocator.isAnyConfigurationValid());
+        assertEquals(4, mBoardAllocator.numberOfResults());
 
     }
 

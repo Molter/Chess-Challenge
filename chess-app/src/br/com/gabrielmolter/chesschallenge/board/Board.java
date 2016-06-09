@@ -13,32 +13,43 @@ public class Board {
 
     private int mRows;
     private int mColumns;
-    private int mTotalPiecesAllocated;
-    private int mTotalPiecesToAllocate;
 
     private PieceBoardAllocator mAllocator;
 
     private List<List<Allocatable>> mMatrix = new ArrayList<>();
-
+    public boolean isCompleted = false;
 
 
     /**
      * Constructor of the Board
-     * @param x Rows
-     * @param y Columns
+     * @param rows Rows
+     * @param columns Columns
      */
-    public Board (int x, int y){
-        this.mRows = x;
-        this.mColumns = y;
+    public Board (int rows, int columns){
+        this.mRows = rows;
+        this.mColumns = columns;
 
-        for (int i = 0; i < x; i++) {
+        for (int i = 0; i < rows; i++) {
             ArrayList<Allocatable> row = new ArrayList<>();
 
-            for (int j = 0; j < y; j++) {
+            for (int j = 0; j < columns; j++) {
                 row.add(new EmptySpace(i, j));
             }
             mMatrix.add(row);
         }
+
+        mAllocator = new PieceBoardAllocator(this);
+    }
+
+    /**
+     * Private constructor to avoid overhead of recreating the board array matrix used on the copy method
+     * @param rows
+     * @param columns
+     * @param doNotRecreateEmptySpaces
+     */
+    public Board (int rows, int columns, boolean doNotRecreateEmptySpaces){
+        this.mRows = rows;
+        this.mColumns = columns;
 
         mAllocator = new PieceBoardAllocator(this);
     }
@@ -73,16 +84,10 @@ public class Board {
      * @param pieceToInsert Piece to be inserted
      */
     protected void setPiece(int row, int column, Allocatable pieceToInsert){
-        try{
-            mMatrix.get(row).set(column, pieceToInsert);
-            pieceToInsert.setPosition(row, column);
-        }catch (IndexOutOfBoundsException e){
-            System.out.println("x = [" + row + "], y = [" + column + "], pieceToInsert = [" + pieceToInsert + "]");
-            System.out.println("Invalid Position");
-            throw e;
-        }catch (Exception e){
-            throw e;
-        }
+
+        mMatrix.get(row).set(column, pieceToInsert);
+        pieceToInsert.setPosition(row, column);
+
     }
 
     /**
@@ -115,25 +120,30 @@ public class Board {
      * @param row Row index
      * @param column Column Index
      * @param piece Allocable piece to be placed.
+     * @return Piece was allocated?
      */
-    public void allocatePiece(int row, int column, Allocatable piece){
-        mAllocator.allocatePiece(row, column, piece);
+    public boolean allocatePiece(int row, int column, Allocatable piece){
+        return mAllocator.allocatePiece(row, column, piece);
     }
 
     /**
-     * Verify if there is any empty cell on the board
+     * New Board Object with the same properties than old one.
      * @return
      */
-    public boolean isBoardFull(){
-        for (List<Allocatable> row :
-                mMatrix) {
-            for (Allocatable cell :
-                    row) {
-                if(cell.isEmpty()){
-                    return  false;
-                }
+    public Board createCopy() {
+
+        Board board = new Board(mRows, mColumns, true);
+
+        for (int i = 0; i < mRows; i++) {
+            ArrayList<Allocatable> row = new ArrayList<>();
+
+            for (int j = 0; j < mColumns; j++) {
+                row.add(mMatrix.get(i).get(j).createCopy());
             }
+
+            board.mMatrix.add(row);
         }
-        return true;
+
+        return board;
     }
 }

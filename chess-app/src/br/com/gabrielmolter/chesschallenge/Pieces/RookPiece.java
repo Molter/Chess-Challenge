@@ -49,4 +49,13 @@ public class RookPiece implements Allocatable {
         mRow = row;
         mColumn = column;
     }
+
+    @Override
+    public Allocatable createCopy() {
+        RookPiece piece = new RookPiece();
+        piece.mRow = mRow;
+        piece.mColumn = mColumn;
+
+        return piece;
+    }
 }

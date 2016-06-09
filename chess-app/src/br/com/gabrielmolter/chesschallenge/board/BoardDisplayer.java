@@ -1,6 +1,5 @@
 package br.com.gabrielmolter.chesschallenge.board;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

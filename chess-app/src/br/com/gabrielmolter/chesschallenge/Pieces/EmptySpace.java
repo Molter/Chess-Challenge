@@ -1,6 +1,5 @@
 package br.com.gabrielmolter.chesschallenge.Pieces;
 
-import br.com.gabrielmolter.chesschallenge.Pieces.InvalidAllocationException;
 import br.com.gabrielmolter.chesschallenge.board.Allocatable;
 
 import java.util.EnumSet;
@@ -29,9 +28,6 @@ public class EmptySpace  implements Allocatable {
 
     @Override
     public void fillSpace() {
-        if (!isEmpty()){
-            throw  new InvalidAllocationException();
-        }
         isEmpty = false;
     }
 
@@ -62,5 +58,15 @@ public class EmptySpace  implements Allocatable {
     public void setPosition(int row, int column) {
         mRow = row;
         mColumn = column;
+    }
+
+    @Override
+    public Allocatable createCopy() {
+        EmptySpace piece = new EmptySpace();
+        piece.mRow = mRow;
+        piece.mColumn = mColumn;
+        piece.isEmpty = isEmpty;
+
+        return piece;
     }
 }
