@@ -74,12 +74,26 @@ public class BoardAllocator {
                     currentBoardSet = attemptAllocation(i, j, mPieces.get(k), new ArrayList<>(mPieces), mEmptyBoard.createCopy());
 
                     if (currentBoardSet.isCompleted) {
-                        mCompletedBoards.add(currentBoardSet);
+                        addToBoardResults(currentBoardSet);
                     }
 
                 }
         }
+
+//        for (int i = mRows - 1; i > 0; i--) {
+//            for (int j = mColumns - 1; j > 0; j--)
+//                for (int k = mPieces.size() - 1; k > 0; k--) {
+//                    currentBoardSet = attemptAllocation(i, j, mPieces.get(k), new ArrayList<>(mPieces), mEmptyBoard.createCopy());
+//
+//                    if (currentBoardSet.isCompleted) {
+//                        addToBoardResults(currentBoardSet);
+//                    }
+//
+//                }
+//        }
+
     }
+
 
     /**
      * Attempt to allocate a Piece in a cell
@@ -113,15 +127,46 @@ public class BoardAllocator {
             return  board;
         }
 
-        //find next empty space, or return board if none
-        Allocatable emptySpace = findNextFreeSpace(board);
-        if(emptySpace == null){
-            return  board;
+
+        for (int i = 0; i < mRows; i++) {
+            for (int j = 0; j < mColumns; j++){
+                if (i == 2 &&  j ==1){
+                    int xxx = 0;
+                }
+                if(tempBoard.getPiece(i, j).isEmpty()){
+                    for (int k = 0; k < pieces.size(); k++) {
+                        board = attemptAllocation(i, j, pieces.get(k), new ArrayList<>(pieces), tempBoard.createCopy());
+                        if (board.isCompleted) {
+                            addToBoardResults(board);
+                        }
+                    }
+                }
+            }
         }
-        board = attemptAllocation(emptySpace.getRow(), emptySpace.getColumn(), pieces.get(0), new ArrayList<>(pieces), board.createCopy());
+
+//        for (int i = mRows - 1; i > 0; i--) {
+//            for (int j = mColumns - 1; j > 0; j--){
+//                if(board.getPiece(i, j).isEmpty()){
+//                    //return board.getPiece(i, j);
+//                    for (int k = pieces.size() - 1; k > 0; k--) {
+//                        board = attemptAllocation(i, j, pieces.get(k), new ArrayList<>(pieces), board.createCopy());
+//                        if (board.isCompleted) {
+//                            addToBoardResults(board);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        //find next empty space, or return board if none
+//        Allocatable emptySpace = findNextFreeSpace(board);
+//        if(emptySpace == null){
+//            return  board;
+//        }
+//        board = attemptAllocation(emptySpace.getRow(), emptySpace.getColumn(), pieces.get(0), new ArrayList<>(pieces), board.createCopy());
 
         return  board;
     }
+
 
     /**
      * Find next free cell
@@ -146,5 +191,21 @@ public class BoardAllocator {
     public int numberOfResults(){
         return mCompletedBoards.size();
     }
+
+
+    /**
+     * Add the board to the results if a board with the same configuration was not added yet
+     * @param board Subject to be tested
+     */
+    private void addToBoardResults(Board board) {
+        for (Board completedBoard :
+                mCompletedBoards) {
+             if(completedBoard.equals(board)){
+                 return;
+             }
+        }
+        mCompletedBoards.add(board);
+    }
+
 }
 

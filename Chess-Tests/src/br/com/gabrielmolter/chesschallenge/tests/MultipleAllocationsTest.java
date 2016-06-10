@@ -1,6 +1,7 @@
 package br.com.gabrielmolter.chesschallenge.tests;
 
 import br.com.gabrielmolter.chesschallenge.Pieces.KingPiece;
+import br.com.gabrielmolter.chesschallenge.Pieces.KnightPiece;
 import br.com.gabrielmolter.chesschallenge.Pieces.RookPiece;
 import br.com.gabrielmolter.chesschallenge.board.Allocatable;
 import br.com.gabrielmolter.chesschallenge.board.Board;
@@ -46,6 +47,23 @@ public class MultipleAllocationsTest {
     }
 
     @Test
+    public void allocateTwoPiecesSmallerBoard(){
+
+        mBoardAllocator = new BoardAllocator(3, 2);
+
+        ArrayList<Allocatable> pieces = new ArrayList<>();
+        pieces.add(new KingPiece());
+        pieces.add(new KingPiece());
+
+        mBoardAllocator.definePieceSet(pieces);
+
+        mBoardAllocator.start();
+        assertTrue(mBoardAllocator.isAnyConfigurationValid());
+
+        assertEquals(4, mBoardAllocator.numberOfResults());
+    }
+
+    @Test
     public void allocateTwoPieces(){
 
         ArrayList<Allocatable> pieces = new ArrayList<>();
@@ -57,8 +75,9 @@ public class MultipleAllocationsTest {
         mBoardAllocator.start();
         assertTrue(mBoardAllocator.isAnyConfigurationValid());
 
-        assertEquals(32, mBoardAllocator.numberOfResults());
+        assertEquals(16, mBoardAllocator.numberOfResults());
     }
+
 
     @Test
     public void allocateTreePieces(){
@@ -76,6 +95,28 @@ public class MultipleAllocationsTest {
 
     }
 
+
+    @Test
+    public void allocateSixPieces(){
+
+         mBoardAllocator = new BoardAllocator(4, 4);
+
+        ArrayList<Allocatable> pieces = new ArrayList<>();
+        pieces.add(new KnightPiece());
+        pieces.add(new KnightPiece());
+        pieces.add(new KnightPiece());
+        pieces.add(new KnightPiece());
+
+        pieces.add(new RookPiece());
+        pieces.add(new RookPiece());
+
+        mBoardAllocator.definePieceSet(pieces);
+
+        mBoardAllocator.start();
+        assertTrue(mBoardAllocator.isAnyConfigurationValid());
+        assertEquals(8, mBoardAllocator.numberOfResults());
+
+    }
 
 
 }

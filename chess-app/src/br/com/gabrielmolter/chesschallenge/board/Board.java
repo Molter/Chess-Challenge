@@ -146,4 +146,29 @@ public class Board {
 
         return board;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (!(obj instanceof Board)){
+            return false;
+        }
+        Board subject = (Board) obj;
+        //all boards should be equal size
+        if(!(subject.getNumberOfColumns() == mColumns && subject.getNumberOfRows() == mRows)){
+            return false;
+        }
+
+        // Compares cell Allocation
+        for (int i = 0; i < mRows; i++) {
+
+            for (int j = 0; j < mColumns; j++) {
+
+                if (!(mMatrix.get(i).get(j).getClass() ==  subject.getPiece(i, j).getClass())){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

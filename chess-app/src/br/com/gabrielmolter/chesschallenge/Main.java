@@ -1,5 +1,6 @@
 package br.com.gabrielmolter.chesschallenge;
 
+import br.com.gabrielmolter.chesschallenge.Pieces.KingPiece;
 import br.com.gabrielmolter.chesschallenge.Pieces.RookPiece;
 import br.com.gabrielmolter.chesschallenge.board.Allocatable;
 import br.com.gabrielmolter.chesschallenge.board.BoardAllocator;
@@ -12,13 +13,12 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String args[]){
-        System.out.println("Main.main");
 
         ArrayList<Allocatable> pieces = new ArrayList<>();
-        pieces.add(new RookPiece());
-//        pieces.add(new RookPiece());
+        pieces.add(new KingPiece());
+        pieces.add(new KingPiece());
 
-        BoardAllocator boardAllocator = new BoardAllocator(2, 2);
+        BoardAllocator boardAllocator = new BoardAllocator(3, 2);
         boardAllocator.definePieceSet(pieces);
 
         boardAllocator.start();
