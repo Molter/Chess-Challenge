@@ -1,8 +1,6 @@
 package br.com.gabrielmolter.chesschallenge.board;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
 /**
  * Created by Gabriel Molter on 31/05/2016 at 01:21 BRT.
@@ -10,7 +8,9 @@ import java.util.List;
  */
 public interface Allocatable {
 
-    public enum PieceRule{
+    Allocatable createCopy();
+
+    enum PieceRule{
         NORTH,
         SOUTH,
         EAST,
@@ -23,15 +23,15 @@ public interface Allocatable {
         KNIGHT,
         NONE
     }
-    public boolean isEmpty();
-    public void fillSpace();
+    boolean isEmpty();
+    void fillSpace();
 
-    public EnumSet<PieceRule> getRules();
+    EnumSet<PieceRule> getRules();
 
-    public String getDisplayType();
+    String getDisplayType();
 
-    public int getRow();
-    public int getColumn();
-    public void setPosition(int row, int column);
+    int getRow();
+    int getColumn();
+    void setPosition(int row, int column);
 }
 
