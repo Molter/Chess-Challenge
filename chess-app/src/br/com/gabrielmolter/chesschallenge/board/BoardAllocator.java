@@ -4,6 +4,7 @@ import br.com.gabrielmolter.chesschallenge.Pieces.InvalidBoardSetupException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Gabriel Molter on 07/06/2016 at 01:27 BRT.
@@ -23,6 +24,9 @@ public class BoardAllocator {
      * @param columns
      */
     public BoardAllocator(int rows, int columns) {
+        if(rows == 0|| columns == 0){
+            throw new InvalidBoardSetupException();
+        }
         mRows = rows;
         mColumns = columns;
         mEmptyBoard = new Board(rows, columns);
@@ -54,6 +58,9 @@ public class BoardAllocator {
      * @param pieces
      */
     public void definePieceSet(List<Allocatable> pieces){
+        if(pieces.size() == 0){
+            throw new InvalidBoardSetupException();
+        }
         mPieces = pieces;
     }
 
@@ -65,7 +72,7 @@ public class BoardAllocator {
         if(mRows ==0 || mColumns == 0 || mPieces.size() == 0){
             throw new InvalidBoardSetupException();
         }
-
+        long startTime = System.nanoTime();
         Board currentBoardSet;
         for (int i = 0; i < mRows; i++) {
 
@@ -79,6 +86,8 @@ public class BoardAllocator {
 
                 }
         }
+        long elapsedTime = System.nanoTime() - startTime;
+        System.out.println("Total Elapsed Time was  = " + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " miliseconds");
 
 //        for (int i = mRows - 1; i > 0; i--) {
 //            for (int j = mColumns - 1; j > 0; j--)
