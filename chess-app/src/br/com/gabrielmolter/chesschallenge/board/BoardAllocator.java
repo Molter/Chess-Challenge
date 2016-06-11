@@ -72,34 +72,35 @@ public class BoardAllocator {
         if(mRows ==0 || mColumns == 0 || mPieces.size() == 0){
             throw new InvalidBoardSetupException();
         }
+
         long startTime = System.nanoTime();
         Board currentBoardSet;
+
+        ArrayList<Thread> threads = new ArrayList<>();
+
         for (int i = 0; i < mRows; i++) {
 
             for (int j = 0; j < mColumns; j++)
                 for (int k = 0; k < mPieces.size(); k++) {
-                    currentBoardSet = attemptAllocation(i, j, mPieces.get(k), new ArrayList<>(mPieces), mEmptyBoard.createCopy());
-
-                    if (currentBoardSet.isCompleted) {
-                        addToBoardResults(currentBoardSet);
-                    }
-
+                    //create new thredas here
+                    AttempAllocationThread runnable = new AttempAllocationThread(this, i, j, mPieces.get(k), new ArrayList<>(mPieces), mEmptyBoard.createCopy());
+                    Thread t = new Thread(runnable);
+                    threads.add(t);
+                    t.start();
                 }
+        }
+
+        // wait untill all threads complete
+        for (Thread t :
+                threads) {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         long elapsedTime = System.nanoTime() - startTime;
         System.out.println("Total Elapsed Time was  = " + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " miliseconds");
-
-//        for (int i = mRows - 1; i > 0; i--) {
-//            for (int j = mColumns - 1; j > 0; j--)
-//                for (int k = mPieces.size() - 1; k > 0; k--) {
-//                    currentBoardSet = attemptAllocation(i, j, mPieces.get(k), new ArrayList<>(mPieces), mEmptyBoard.createCopy());
-//
-//                    if (currentBoardSet.isCompleted) {
-//                        addToBoardResults(currentBoardSet);
-//                    }
-//
-//                }
-//        }
 
     }
 
@@ -139,9 +140,6 @@ public class BoardAllocator {
 
         for (int i = 0; i < mRows; i++) {
             for (int j = 0; j < mColumns; j++){
-                if (i == 2 &&  j ==1){
-                    int xxx = 0;
-                }
                 if(tempBoard.getPiece(i, j).isEmpty()){
                     for (int k = 0; k < pieces.size(); k++) {
                         board = attemptAllocation(i, j, pieces.get(k), new ArrayList<>(pieces), tempBoard.createCopy());
@@ -152,26 +150,6 @@ public class BoardAllocator {
                 }
             }
         }
-
-//        for (int i = mRows - 1; i > 0; i--) {
-//            for (int j = mColumns - 1; j > 0; j--){
-//                if(board.getPiece(i, j).isEmpty()){
-//                    //return board.getPiece(i, j);
-//                    for (int k = pieces.size() - 1; k > 0; k--) {
-//                        board = attemptAllocation(i, j, pieces.get(k), new ArrayList<>(pieces), board.createCopy());
-//                        if (board.isCompleted) {
-//                            addToBoardResults(board);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        //find next empty space, or return board if none
-//        Allocatable emptySpace = findNextFreeSpace(board);
-//        if(emptySpace == null){
-//            return  board;
-//        }
-//        board = attemptAllocation(emptySpace.getRow(), emptySpace.getColumn(), pieces.get(0), new ArrayList<>(pieces), board.createCopy());
 
         return  board;
     }
@@ -206,7 +184,7 @@ public class BoardAllocator {
      * Add the board to the results if a board with the same configuration was not added yet
      * @param board Subject to be tested
      */
-    private void addToBoardResults(Board board) {
+    protected synchronized void addToBoardResults(Board board) {
         for (Board completedBoard :
                 mCompletedBoards) {
              if(completedBoard.equals(board)){
